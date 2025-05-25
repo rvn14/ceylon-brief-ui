@@ -49,7 +49,7 @@ const HomePage = async () => {
   return (
     <div className="bg-background p-2 md:p-16">
       <div className="pt-6 pb-16 flex justify-center items-center">
-        <Highlights dummy={newsData} />
+        <Highlights news={newsData} />
       </div>
       <div className="font-semibold justify-center w-full items-center mb-8">
         <div className="w-fit flex text-3xl font-bold font-inter">

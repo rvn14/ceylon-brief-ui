@@ -20,18 +20,18 @@ interface NewsItem {
 
 interface HighlightsProps {
   isLoading: boolean;
-  dummy: NewsItem[];
+  news: NewsItem[];
 }
 
-const Highlights = ({ dummy }: HighlightsProps) => {
-    const dummyData = dummy || [];
+const Highlights = ({ news }: HighlightsProps) => {
+    const newsData = news || [];
     
-    const politicNews = dummyData.find((item) => item?.category === "Politics")
-    const businessNews = dummyData.find((item) => item?.category === "Business")
-    const sportsNews = dummyData.find((item) => item?.category === "Sports")
-    const scienceNews = dummyData.find((item) => item?.category === "Science")
-    const healthNews = dummyData.find((item) => item?.category === "Health")
-    const technologyNews = dummyData.find((item) => item?.category === "Technology")
+    const politicNews = newsData.find((item) => item?.category === "Politics")
+    const businessNews = newsData.find((item) => item?.category === "Business")
+    const sportsNews = newsData.find((item) => item?.category === "Sports")
+    const scienceNews = newsData.find((item) => item?.category === "Science")
+    const healthNews = newsData.find((item) => item?.category === "Health")
+    const technologyNews = newsData.find((item) => item?.category === "Technology")
 
     console.log(politicNews);
     
