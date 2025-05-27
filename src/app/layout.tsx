@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CeylonBrief",
-  description: "Latest news and updates from Sri Lanka",
+  description: "Latest updates from Sri Lanka",
 };
 
 export default function RootLayout({

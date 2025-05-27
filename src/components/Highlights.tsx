@@ -19,7 +19,6 @@ interface NewsItem {
 }
 
 interface HighlightsProps {
-  isLoading: boolean;
   news: NewsItem[];
 }
 

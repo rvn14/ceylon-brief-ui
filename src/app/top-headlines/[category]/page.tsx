@@ -1,5 +1,5 @@
 import EverythingCard from "@/components/EverythingCard";
-import { dummy } from "@/utils/dummyData";
+
 
 interface Article {
   url: string;
@@ -20,7 +20,7 @@ interface TopHeadlineItem {
   url: string;
   source: string;
   cover_image: string;
-  date_published: string;
+  date_published: string | { $date: string };
   short_summary: string;
   long_summary: string;
   representative_title?: string;
@@ -60,16 +60,12 @@ export default async function TopHeadlines({ params }: PageProps) {
       data = json.data;
     } else {
       error = json.message || "An error occurred";
-      data = dummy.filter(
-        (item) => item.category === category || item.group_id === category
-      );
+      
     }
   } catch (err) {
     console.error("Fetch error:", err);
     error = "Failed to fetch news. Please try again later.";
-    data = dummy.filter(
-      (item) => item.category === category || item.group_id === category
-    );
+    
   }
 
   return (

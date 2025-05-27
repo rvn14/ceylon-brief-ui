@@ -1,4 +1,4 @@
-import { dummy } from "@/utils/dummyData";
+
 import Highlights from "@/components/Highlights";
 import PaginatedNewsList from "@/components/PaginatedNewsList";
 
@@ -44,7 +44,7 @@ const HomePage = async () => {
     console.error("Fetch error:", err, error);
   }
 
-  const newsData = data.length > 0 ? data : dummy;
+  const newsData = data;
 
   return (
     <div className="bg-background p-2 md:p-16">

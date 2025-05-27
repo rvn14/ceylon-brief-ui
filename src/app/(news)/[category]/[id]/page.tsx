@@ -191,14 +191,9 @@ const page = async ({ params }: PageProps) => {
             </span>
             <span className="">
               {formatDate(
-                isGroup
-                  ? typeof news.articles![0].date_published === "string"
-                    ? news.articles![0].date_published
-                    : (news.articles![0].date_published as { $date: string })
-                        .$date
-                  : typeof news.date_published === "string"
-                  ? news.date_published
-                  : (news.date_published as { $date: string }).$date
+                isGroup && news.articles && news.articles[0]
+                  ? news.articles[0].date_published
+                  : news.date_published
               )}
             </span>
           </div>
