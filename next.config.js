@@ -12,6 +12,10 @@ const nextConfig = {
         hostname: "**",
       },
       {
+        protocol: "http",
+        hostname: "s3.amazonaws.com",
+      },
+      {
         protocol: "https",
         hostname: "big-art-project.fra1.digitaloceanspaces.com",
         port: "",
