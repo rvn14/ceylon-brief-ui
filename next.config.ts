@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "big-art-project.fra1.digitaloceanspaces.com",
+        port: "",
+        pathname: "**",
       },
     ],
   },
