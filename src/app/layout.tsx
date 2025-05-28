@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CeylonBrief",
+  title: "CeylonBrief - Latest News from Sri Lanka",
   description: "Latest updates from Sri Lanka",
 };
 

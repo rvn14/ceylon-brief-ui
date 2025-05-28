@@ -37,13 +37,23 @@ type Props = {
 };
 
 const page: FC<Props> = async ({ searchParams }) => {
-  const query = searchParams.query ?? "";
+  // Await searchParams before accessing properties
+  const params = await searchParams;
+  const queryValue = params.query;
+  const query =
+    typeof queryValue === "string"
+      ? queryValue
+      : Array.isArray(queryValue)
+      ? queryValue[0]
+      : "";
+
   let data: NewsItem[] = [];
   let error: string | null = null;
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   try {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/search?query=${encodeURIComponent(query)}`,
+      `${apiBaseUrl}/api/search?query=${encodeURIComponent(query)}`,
       {
         next: { revalidate: 60 },
       }

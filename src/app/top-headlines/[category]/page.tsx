@@ -1,4 +1,4 @@
-import EverythingCard from "@/components/EverythingCard";
+import PaginatedNewsList from "@/components/PaginatedNewsList";
 
 
 interface Article {
@@ -77,63 +77,8 @@ export default async function TopHeadlines({ params }: PageProps) {
         </div>
         <div className="border-1 border-primary w-full opacity-60 mb-8"></div>
       </div>
-      <div className="flex justify-center items-center mb-8 p-2 md:p-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 ">
-          {data.map((element, index) => {
-            const isGroup = Boolean(element.group_id);
-
-            if (
-              isGroup &&
-              (!element.articles || element.articles.length === 0)
-            ) {
-              return null;
-            }
-
-            const urls = isGroup
-              ? element.articles!.map((article) => article.url).join(",")
-              : element.url;
-
-            const newsProviders = isGroup
-              ? element.articles!.map((article) => article.source).join(",")
-              : element.source;
-
-            return (
-              <EverythingCard
-                key={index}
-                title={
-                  isGroup
-                    ? element.representative_title || ""
-                    : element.title || ""
-                }
-                description={element.short_summary}
-                summary={element.long_summary}
-                imgUrl={
-                  isGroup
-                    ? element.articles?.[0]?.cover_image ||
-                      "/images/News_web.jpg"
-                    : element.cover_image || "/images/News_web.jpg"
-                }
-                publishedDate={
-                  isGroup
-                    ? typeof element.articles![0].date_published === "string"
-                      ? element.articles![0].date_published
-                      : (
-                          element.articles![0].date_published as {
-                            $date: string;
-                          }
-                        ).$date
-                    : typeof element.date_published === "string"
-                    ? element.date_published
-                    : element.date_published.$date
-                }
-                newsProvider={newsProviders ?? null}
-                source={urls ?? ""}
-                id={element.id}
-                category={element.category}
-              />
-            );
-          })}
-        </div>
+      <div className="flex flex-col justify-center items-center mb-8 p-2 md:p-10">
+        <PaginatedNewsList newsItems={data} />
       </div>
     </div>
   );
