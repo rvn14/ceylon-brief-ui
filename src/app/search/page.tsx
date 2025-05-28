@@ -53,7 +53,7 @@ const page: FC<Props> = async ({ searchParams }) => {
 
   try {
     const response = await fetch(
-      `${apiBaseUrl}/api/search?query=${encodeURIComponent(query)}`,
+      `${apiBaseUrl}/search?query=${encodeURIComponent(query)}`,
       {
         next: { revalidate: 60 },
       }

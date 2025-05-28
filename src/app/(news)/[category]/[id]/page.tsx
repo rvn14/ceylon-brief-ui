@@ -135,7 +135,7 @@ const page = async ({ params }: PageProps) => {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/news?category=${category}&id=${id}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news?category=${category}&id=${id}`,
       {
         next: { revalidate: 60 },
       }

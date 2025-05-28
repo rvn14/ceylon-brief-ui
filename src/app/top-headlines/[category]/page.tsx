@@ -44,9 +44,7 @@ export default async function TopHeadlines({ params }: PageProps) {
 
   try {
     const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_BASE_URL
-      }/api/news?category=${encodeURIComponent(category || "general")}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news?category=${encodeURIComponent(category || "general")}`,
       { cache: "no-store" }
     );
 

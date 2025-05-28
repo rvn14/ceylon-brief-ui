@@ -22,7 +22,7 @@ const HomePage = async () => {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/latest-news`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/latest-news`,
       {
         next: { revalidate: 60 },
       }

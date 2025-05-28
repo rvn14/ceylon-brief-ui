@@ -47,7 +47,7 @@ const formatDateKey = (key: string) => {
 const fetchFeaturedArticles = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/all_feature_articles`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/all_feature_articles`,
       {
         next: { revalidate: 60 },
       }
