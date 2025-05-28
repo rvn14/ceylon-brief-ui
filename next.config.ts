@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "big-art-project.fra1.digitaloceanspaces.com",
+      },
     ],
   },
   typescript: {
