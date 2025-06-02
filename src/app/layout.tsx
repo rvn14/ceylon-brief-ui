@@ -29,8 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
+    <head>
+      <link rel="icon" href="/images/favicon.ico" />
+    </head>  
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        
       ><ReactLenis root>
          <ThemeProvider
             attribute="class"
