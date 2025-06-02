@@ -166,9 +166,9 @@ const HeadSection: React.FC = () => {
         <Link className="nav-link p-2" href={"/top-headlines/politics"}>
           Politics
         </Link>
-        <Link className="nav-link p-2 bg-white/8" href={"/featured-news"}>
+        {/* <Link className="nav-link p-2 bg-white/8" href={"/featured-news"}>
           Featured Articles
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
