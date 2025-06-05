@@ -1,7 +1,6 @@
 "use client";
 
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
-import { SelectCategory } from "./SelectCategory";
 import { ModeToggle } from "@/components/mode-toggle";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -72,15 +71,18 @@ const HeadSection: React.FC = () => {
       </div>
 
       <div
-        className="bg-darkprimary px-4 flex items-center justify-between relative shadow-md py-4 sm:py-6 md:py-8 min-h-[4rem] sm:min-h-[6rem] md:min-h-[7rem] w-full"
+        className="bg-darkprimary px-4 flex items-center justify-between relative shadow-md py-6 sm:py-6 md:py-8 min-h-[4rem] sm:min-h-[6rem] md:min-h-[7rem] w-full"
         style={{
           backgroundImage: "url('/images/cover2.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="logo font-mono font-semibold text-6xl md:text-6xl ">
-          Ceylon Brief
+        <div className="logo font-inter font-semibold text-5xl md:text-6xl">
+          <div className="flex flex-col leading-4 md:leading-6 -mt-3 relative">
+            <span className="text-2xl md:text-4xl font-black px-9">The</span>
+            <span>CeylonBrief</span>
+          </div>
         </div>
         {/* Mobile Menu Toggle */}
         <div className="md:hidden ml-auto self-center flex items-center">
@@ -93,44 +95,112 @@ const HeadSection: React.FC = () => {
 
         {/* Mobile Navigation - Positioned Absolutely */}
         {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-darkprimary py-2 z-20 shadow-lg">
-            <ul className="flex flex-col space-y-2 mb-4">
-              <li className="nav-link px-4">
-                <Link href="/">Home</Link>
-              </li>
-              <li className="nav-link px-4">
-                <Link href={`/top-headlines/Business`}>Business</Link>
-              </li>
-              <li className="nav-link px-4">
-                <Link href={`/top-headlines/Entertainment`}>Entertainment</Link>
-              </li>
-              <li className="bg-transparent px-4">
-                {" "}
-                <SelectCategory />{" "}
-              </li>
-            </ul>
-            {/* Search moved inside mobile menu */}
-            <div className="px-4 pb-4">
-              <form
-                onSubmit={handleSearch}
-                className="flex items-center w-full"
-              >
-                <div className="search-container w-full flex">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={handleInputChange}
-                    placeholder="Search news..."
-                    className="p-2 px-4 focus:outline-none focus:ring-0 bg-white/3 rounded-l-md w-full"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-white/3 text-white p-2 px-4 hover:bg-white/5 transition-colors duration-100 cursor-pointer rounded-r-md"
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-darkprimary shadow-2xl border-t border-gray-200 dark:border-gray-700 z-50">
+            <div className="max-h-screen overflow-y-auto">
+              <ul className="py-2">
+                <li>
+                  <Link
+                    href="/"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
-                    <Search className="text-white" />
-                  </button>
-                </div>
-              </form>
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/general"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    General
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/business"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Business
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/entertainment"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Entertainment
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/health"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Health
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/science"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Science
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/sports"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sports
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/technology"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Technology
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/politics"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Politics
+                  </Link>
+                </li>
+              </ul>
+
+              {/* Search section in mobile menu */}
+              <div className="px-6 py-4 bg-gray-50 dark:bg-darkprimary border-t border-gray-200 dark:border-gray-700">
+                <form onSubmit={handleSearch} className="w-full">
+                  <div className="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={handleInputChange}
+                      placeholder="Search news..."
+                      className="flex-1 p-3 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                    <button
+                      type="submit"
+                      className="bg-red-600 hover:bg-red-700 text-white p-3 transition-colors duration-200"
+                    >
+                      <Search size={20} />
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         )}
