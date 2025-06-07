@@ -44,6 +44,7 @@ jobs:
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
+            export NEXT_PUBLIC_API_BASE_URL="${{ secrets.NEXT_PUBLIC_API_BASE_URL }}"
             docker load < /tmp/nextjs-app.tar.gz
             docker stop nextjs-app || true
             docker rm nextjs-app || true
@@ -51,6 +52,6 @@ jobs:
             docker run -d \
               --name nextjs-app \
               --memory=800m \
-              -e NEXT_PUBLIC_API_BASE_URL="${NEXT_PUBLIC_API_BASE_URL}" \
+              -e NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL \
               -p 3000:3000 \
               $IMAGE_TAG
