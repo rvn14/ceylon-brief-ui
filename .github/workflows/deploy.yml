@@ -13,16 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Set image tag
+        id: image_tag
+        run: echo "IMAGE_TAG=nextjs-app:${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Build Docker image with unique tag
         run: |
-          docker build -t nextjs-app .
+          docker build --no-cache -t $IMAGE_TAG .
 
       - name: Save Docker image to tar
         run: |
-          docker save nextjs-app | gzip > nextjs-app.tar.gz
+          docker save $IMAGE_TAG | gzip > nextjs-app.tar.gz
 
       - name: Copy image to server
         uses: appleboy/scp-action@v0.1.7
@@ -40,12 +44,14 @@ jobs:
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
+            export NEXT_PUBLIC_API_BASE_URL="${{ secrets.NEXT_PUBLIC_API_BASE_URL }}"
             docker load < /tmp/nextjs-app.tar.gz
             docker stop nextjs-app || true
             docker rm nextjs-app || true
+            IMAGE_TAG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '^nextjs-app:')
             docker run -d \
-                --name nextjs-app \
-                --memory=800m \
-                -e NEXT_PUBLIC_API_BASE_URL="${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" \
-                -p 3000:3000 \
-                nextjs-app
+              --name nextjs-app \
+              --memory=800m \
+              -e NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL \
+              -p 3000:3000 \
+              $IMAGE_TAG
