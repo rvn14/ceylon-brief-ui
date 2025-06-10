@@ -65,6 +65,10 @@ const Highlights = ({ news }: HighlightsProps) => {
         
         // Get time difference in hours
         const hoursDiff = Math.floor((Date.now() - dateObj.getTime()) / (1000 * 60 * 60));
+
+        if (hoursDiff < 1) {
+          return "Just now";
+        }
         
         if (hoursDiff < 24) {
           return `${hoursDiff} hrs ago`;
@@ -101,7 +105,7 @@ const Highlights = ({ news }: HighlightsProps) => {
           <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
           <div className="absolute inset-0 w-2 h-2 rounded-full bg-red-500 animate-ping opacity-75"></div>
         </div>
-        <span className="text-red-500 font-medium text-sm uppercase tracking-wide">HOT News</span>
+        <span className="text-red-500 font-medium text-sm uppercase tracking-wide">Latest News</span>
       </div>
     );
 
@@ -111,7 +115,7 @@ const Highlights = ({ news }: HighlightsProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left column - Featured article */}
           <div className="lg:col-span-8">
-            <div className="group bg-white dark:bg-darkprimary rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 ">
+            <div className="group bg-white dark:bg-darkprimary rounded-lg overflow-hidden shadow-sm transition-all duration-300 ">
               <div className="relative w-full h-[450px] overflow-hidden">
                 <Image 
                   src={politicNews?.group_id
@@ -159,7 +163,7 @@ const Highlights = ({ news }: HighlightsProps) => {
           <div className="lg:col-span-4 space-y-4">
             {otherNews.slice(0, 5).map((newsItem, index) => (
               newsItem && (
-                <article key={newsItem.id || index} className="group bg-white dark:bg-darkprimary rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-500/30 h-28 ">
+                <article key={newsItem.id || index} className="group bg-white dark:bg-darkprimary rounded-lg overflow-hidden shadow-sm  transition-all duration-300 border border-gray-100 dark:border-gray-500/30 h-28 ">
                   <div className="flex gap-4">
                     <div className="relative w-36 h-30 flex-shrink-0 overflow-hidden rounded-lg">
                       <Image 

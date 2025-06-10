@@ -1,4 +1,3 @@
-
 import Highlights from "@/components/Highlights";
 import PaginatedNewsList from "@/components/PaginatedNewsList";
 
