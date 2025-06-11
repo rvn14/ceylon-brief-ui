@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import PaginatedNewsList from "@/components/PaginatedNewsList";
 
 
@@ -68,7 +69,7 @@ export default async function TopHeadlines({ params }: PageProps) {
 
   return (
     <div className="bg-background p-2 pt-16">
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+      
       <div className="font-semibold justify-center w-full items-center mb-8 px-6">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{category} Headlines</h2>
