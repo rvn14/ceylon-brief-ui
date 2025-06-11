@@ -68,7 +68,7 @@ export default async function TopHeadlines({ params }: PageProps) {
   }
 
   return (
-    <div className="bg-background p-2 pt-16">
+    <div className="bg-background p-2 pt-16 min-h-screen">
       
       <div className="font-semibold justify-center w-full items-center mb-8 px-6">
         <div className="mb-8">

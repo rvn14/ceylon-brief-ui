@@ -1,8 +1,9 @@
 // EverythingCard.tsx
 import { ArrowRightIcon } from "lucide-react";
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface EverythingCardProps {
   title: string;
@@ -38,6 +39,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
         <Link href={`/${category.toLowerCase()}/${id}`} className="w-full">
         {/* Image section with category badge */}
         <div className="relative overflow-hidden ">
+          <Suspense fallback={<Skeleton className="w-full max-h-48 min-h-48" />} >
           <Image
             width={600}
             height={400}
@@ -47,6 +49,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
             
             
           />
+          </Suspense>
           <div className="absolute top-4 left-4">
             <span className="bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wider">
               {category}
