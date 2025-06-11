@@ -35,7 +35,6 @@ const HomePage = async () => {
     const result = await response.json();
     if (result.success) {
       data = result.data;
-      console.log(data);
     } else {
       error = result.message || "An error occurred";
     }
@@ -51,11 +50,11 @@ const HomePage = async () => {
       <div className="pt-6 pb-16 flex justify-center items-center">
         <Highlights news={newsData} />
       </div>
-      <div className="font-semibold justify-center w-full items-center mb-8">
-        <div className="w-fit flex text-3xl font-bold font-inter">
-          <span>Latest News</span>
+      <div className="font-semibold justify-center w-full items-center mb-8 px-4">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Latest News</h2>
+          <div className="w-full h-1 bg-gradient-to-r from-red-600 to-red-500 rounded-full"></div>
         </div>
-        <div className="border-1 border-primary w-full opacity-60 mb-8"></div>
       </div>
 
       <PaginatedNewsList newsItems={newsData} />

@@ -36,15 +36,6 @@ interface PageProps {
   };
 }
 
-const shortenUrl = (url: string): string => {
-  try {
-    const parsed = new URL(url);
-    return parsed.origin;
-  } catch (err) {
-    console.error("URL parsing error:", err);
-    return url;
-  }
-};
 
 const formatDate = (
   dateString: string | { $date: string | number } | undefined
@@ -84,7 +75,6 @@ const formatDate = (
   }
 };
 
-// Helper function to map news source to appropriate icon
 const getSourceIcon = (url: string) => {
   if (!url) return <Globe className="h-6 w-6" />;
 
@@ -121,7 +111,6 @@ const getSourceIcon = (url: string) => {
       />
     );
 
-  // Default icon for other sources
   return <Globe className="h-6 w-6" />;
 };
 
@@ -141,6 +130,8 @@ const page = async ({ params }: PageProps) => {
       }
     );
 
+
+
     if (!response.ok) {
       throw new Error(`API responded with status: ${response.status}`);
     }
@@ -148,6 +139,8 @@ const page = async ({ params }: PageProps) => {
     const result = await response.json();
     if (result.success) {
       news = result.data;
+      console.log("Fetched news:", news);
+      
     } else {
       error = result.message || "An error occurred";
     }
@@ -232,7 +225,7 @@ const page = async ({ params }: PageProps) => {
           <h3 className="text-xl font-semibold mb-3">News Sources</h3>
           {!isGroup ? (
             <a
-              href={news.source}
+              href={news.url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
@@ -250,7 +243,7 @@ const page = async ({ params }: PageProps) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center text-center max-w-[100px] hover:opacity-80 transition-opacity"
-                  title={shortenUrl(source)}
+                  
                 >
                   <div className="p-3 rounded-full bg-secondary hover:bg-secondary/80 transition-colors mb-2">
                     {getSourceIcon(source)}

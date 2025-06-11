@@ -2,15 +2,6 @@
 
 import { useState, useEffect } from "react";
 import EverythingCard from "./EverythingCard";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 
 interface Article {
   url: string;
@@ -121,8 +112,8 @@ const PaginatedNewsList = ({ newsItems }: PaginatedNewsListProps) => {
 
   return (
     <>
-      <div id="latest-news-grid" className="flex justify-center items-center  p-4 md:p-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
+      <div id="latest-news-grid" className="flex justify-center items-center p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-8xl">
           {currentItems.map((element, index) => {
             const isGroup = Boolean(element.group_id);
 
@@ -186,47 +177,70 @@ const PaginatedNewsList = ({ newsItems }: PaginatedNewsListProps) => {
       </div>
       
       {totalPages > 1 && (
-        <div className="flex justify-center py-6 px-2">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  href="#"
-                />
-              </PaginationItem>
-              
+        <div className="flex justify-center items-center py-8 px-4">
+          <div className="flex items-center space-x-1">
+            {/* Previous Button */}
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 px-4 py-2 gap-1 pl-2.5 ${
+                currentPage === 1
+                  ? "pointer-events-none opacity-50 text-muted-foreground"
+                  : "hover:bg-accent hover:text-accent-foreground"
+              }`}
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="hidden sm:inline">Previous</span>
+            </button>
+
+            {/* Page Numbers */}
+            <div className="flex items-center space-x-1">
               {getPageButtons().map((page, index) => (
                 typeof page === 'number' ? (
-                  <PaginationItem key={index}>
-                    <PaginationLink
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handlePageChange(page);
-                      }}
-                      isActive={currentPage === page}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
+                  <button
+                    key={index}
+                    onClick={() => handlePageChange(page)}
+                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-10 ${
+                      currentPage === page
+                        ? "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
+                        : "hover:bg-accent hover:text-accent-foreground"
+                    }`}
+                    aria-label={`Go to page ${page}`}
+                  >
+                    {page}
+                  </button>
                 ) : (
-                  <PaginationItem key={index}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
+                  <span 
+                    key={index} 
+                    className="flex h-9 w-9 items-center justify-center text-muted-foreground"
+                    aria-hidden="true"
+                  >
+                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 14.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM18.5 14.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM5.5 14.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                    </svg>
+                  </span>
                 )
               ))}
-              
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  href="#"
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 px-4 py-2 gap-1 pr-2.5 ${
+                currentPage === totalPages
+                  ? "pointer-events-none opacity-50 text-muted-foreground"
+                  : "hover:bg-accent hover:text-accent-foreground"
+              }`}
+            >
+              <span className="hidden sm:inline">Next</span>
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       )}
     </>
