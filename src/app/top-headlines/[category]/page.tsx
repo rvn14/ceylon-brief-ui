@@ -14,6 +14,22 @@ interface Article {
   week: string;
 }
 
+interface NewsItem {
+  _id: string;
+  id: string;
+  category: string;
+  url: string;
+  source: string;
+  cover_image: string;
+  date_published: string;
+  short_summary: string;
+  long_summary: string;
+  representative_title?: string;
+  title: string;
+  group_id?: string | null;
+  articles?: Article[];
+}
+
 interface TopHeadlineItem {
   _id: string;
   id: string;
@@ -40,7 +56,7 @@ export default async function TopHeadlines({ params }: PageProps) {
   const category =
     params.category.charAt(0).toUpperCase() + params.category.slice(1);
 
-  let data: TopHeadlineItem[] = [];
+  let data: NewsItem[] = [];
   let error = null;
 
   try {
@@ -56,7 +72,18 @@ export default async function TopHeadlines({ params }: PageProps) {
     const json = await response.json();
 
     if (json.success) {
-      data = json.data;
+      data = json.data
+        .map((item: TopHeadlineItem) => ({
+          ...item,
+          date_published: typeof item.date_published === 'string' 
+            ? item.date_published 
+            : item.date_published.$date
+        }))
+        .sort((a: TopHeadlineItem, b: TopHeadlineItem) => {
+          const dateA = new Date(a.date_published as string);
+          const dateB = new Date(b.date_published as string);
+          return dateB.getTime() - dateA.getTime(); // Sort from newest to oldest
+        });
     } else {
       error = json.message || "An error occurred";
       
