@@ -39,6 +39,7 @@ const PaginatedNewsList = ({ newsItems }: PaginatedNewsListProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [screenWidth, setScreenWidth] = useState<number>(0);
   const [isBrowser, setIsBrowser] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const itemsPerPage = 12; 
   const maxPageButtons = 15; 
 
@@ -103,17 +104,33 @@ const PaginatedNewsList = ({ newsItems }: PaginatedNewsListProps) => {
   };
 
   const handlePageChange = (pageNumber: number) => {
+    setIsLoading(true);
     setCurrentPage(pageNumber);
-    window.scrollTo({
-      top: document.getElementById('latest-news-grid')?.offsetTop || 0,
-      behavior: 'smooth'
-    });
+    
+    // Add a small delay to show loading state and simulate smooth transition
+    setTimeout(() => {
+      setIsLoading(false);
+      window.scrollTo({
+        top: document.getElementById('latest-news-grid')?.offsetTop || 0,
+        behavior: 'smooth'
+      });
+    }, 300);
   };
 
   return (
     <>
-      <div id="latest-news-grid" className="flex justify-center items-center p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-8xl">
+      <div id="latest-news-grid" className="flex justify-center items-center p-4 relative">
+        {/* Loading overlay */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
+            <div className="flex flex-col items-center space-y-3">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <span className="text-sm text-muted-foreground font-medium">Loading content...</span>
+            </div>
+          </div>
+        )}
+        
+        <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-8xl transition-opacity duration-200 ${isLoading ? 'opacity-30' : 'opacity-100'}`}>
           {currentItems.map((element, index) => {
             const isGroup = Boolean(element.group_id);
 
