@@ -106,7 +106,37 @@ const getSourceIcon = (url: string) => {
         width={200}
         height={200}
         src="/images/hiru.jpg"
-        alt="News First"
+                alt="Hiru News"
+        className="h-6 w-6"
+      />
+    );
+  if (domain.includes("siyathanews"))
+    return (
+      <Image
+        width={200}
+        height={200}
+        src="/images/siyatha.png"
+        alt="Siyatha News"
+        className="h-6 w-6"
+      />
+    );
+  if (domain.includes("colombotimes"))
+    return (
+      <Image
+        width={200}
+        height={200}
+        src="/images/colombotimes.jpg"
+        alt="Colombo Times"
+        className="h-6 w-6"
+      />
+    );
+  if (domain.includes("gagana"))
+    return (
+      <Image
+        width={200}
+        height={200}
+        src="/images/gagana.jpg"
+        alt="Gagana News"
         className="h-6 w-6"
       />
     );
@@ -139,7 +169,7 @@ const page = async ({ params }: PageProps) => {
     const result = await response.json();
     if (result.success) {
       news = result.data;
-      console.log("Fetched news:", news);
+      
       
     } else {
       error = result.message || "An error occurred";
