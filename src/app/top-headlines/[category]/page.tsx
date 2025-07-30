@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import PaginatedNewsList from "@/components/PaginatedNewsList";
 
-
 interface Article {
   url: string;
   content: string;
@@ -53,15 +52,18 @@ interface PageProps {
 }
 
 export default async function TopHeadlines({ params }: PageProps) {
-  const category =
-    params.category.charAt(0).toUpperCase() + params.category.slice(1);
+  const { category } = await params;
+  const formattedCatogory =
+    category.charAt(0).toUpperCase() + category.slice(1);
 
   let data: NewsItem[] = [];
   let error = null;
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news?category=${encodeURIComponent(category || "general")}`,
+      `${
+        process.env.NEXT_PUBLIC_API_BASE_URL
+      }/news?category=${encodeURIComponent(formattedCatogory || "general")}`,
       { cache: "no-store" }
     );
 
@@ -75,9 +77,10 @@ export default async function TopHeadlines({ params }: PageProps) {
       data = json.data
         .map((item: TopHeadlineItem) => ({
           ...item,
-          date_published: typeof item.date_published === 'string' 
-            ? item.date_published 
-            : item.date_published.$date
+          date_published:
+            typeof item.date_published === "string"
+              ? item.date_published
+              : item.date_published.$date,
         }))
         .sort((a: TopHeadlineItem, b: TopHeadlineItem) => {
           const dateA = new Date(a.date_published as string);
@@ -86,20 +89,19 @@ export default async function TopHeadlines({ params }: PageProps) {
         });
     } else {
       error = json.message || "An error occurred";
-      
     }
   } catch (err) {
     console.error("Fetch error:", err);
     error = "Failed to fetch news. Please try again later.";
-    
   }
 
   return (
     <div className="bg-background p-2 pt-16 min-h-screen">
-      
       <div className="font-semibold justify-center w-full items-center mb-8 px-6">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{category} Headlines</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {category} Headlines
+          </h2>
           <div className="w-full h-1 bg-gradient-to-r from-red-600 to-red-500 rounded-full"></div>
         </div>
       </div>

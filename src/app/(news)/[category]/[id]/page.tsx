@@ -36,7 +36,6 @@ interface PageProps {
   };
 }
 
-
 const formatDate = (
   dateString: string | { $date: string | number } | undefined
 ): string => {
@@ -106,7 +105,7 @@ const getSourceIcon = (url: string) => {
         width={200}
         height={200}
         src="/images/hiru.jpg"
-                alt="Hiru News"
+        alt="Hiru News"
         className="h-6 w-6"
       />
     );
@@ -145,22 +144,20 @@ const getSourceIcon = (url: string) => {
 };
 
 const page = async ({ params }: PageProps) => {
-  const id = params.id;
-  const category =
-    params.category.charAt(0).toUpperCase() + params.category.slice(1);
+  const { id, category } = await params;
+
+  const formatedCategory = category.charAt(0).toUpperCase() + category.slice(1);
 
   let news: NewsItem | null = null;
   let error: string | null = null;
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news?category=${category}&id=${id}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news?category=${formatedCategory}&id=${id}`,
       {
         next: { revalidate: 60 },
       }
     );
-
-
 
     if (!response.ok) {
       throw new Error(`API responded with status: ${response.status}`);
@@ -169,8 +166,6 @@ const page = async ({ params }: PageProps) => {
     const result = await response.json();
     if (result.success) {
       news = result.data;
-      
-      
     } else {
       error = result.message || "An error occurred";
     }
@@ -273,7 +268,6 @@ const page = async ({ params }: PageProps) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center text-center max-w-[100px] hover:opacity-80 transition-opacity"
-                  
                 >
                   <div className="p-3 rounded-full bg-secondary hover:bg-secondary/80 transition-colors mb-2">
                     {getSourceIcon(source)}
