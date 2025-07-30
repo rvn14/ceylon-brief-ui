@@ -80,7 +80,7 @@ const HeadSection: React.FC = () => {
       >
         <div className="logo font-inter font-semibold text-5xl md:text-6xl">
           <div className="flex flex-col leading-4 md:leading-6 -mt-3 relative">
-            <span>CeylonBrief</span>
+            <span>CeylonBrief123</span>
           </div>
         </div>
         {/* Mobile Menu Toggle */}
