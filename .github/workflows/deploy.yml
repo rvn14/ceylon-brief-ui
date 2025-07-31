@@ -40,9 +40,10 @@ jobs:
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
-            docker load < /tmp/nextjs-app.tar.gz
             docker stop nextjs-app || true
             docker rm nextjs-app || true
+            docker rmi nextjs-app || true
+            docker load < /tmp/nextjs-app.tar.gz
             docker run -d \
               --name nextjs-app \
               --memory=800m \
