@@ -46,8 +46,8 @@ const HomePage = async () => {
   const newsData = data;
 
   return (
-    <div className="bg-background p-2 md:p-16">
-      <div className="pt-6 pb-16 flex justify-center items-center">
+    <div className="bg-background p-2 md:p-16 md:px-28">
+      <div className="pt-6 pb-8 flex justify-center items-center">
         <Highlights news={newsData} />
       </div>
       <div className="font-semibold justify-center w-full items-center mb-8 px-4">
