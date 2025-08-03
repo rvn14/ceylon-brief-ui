@@ -71,16 +71,21 @@ const HeadSection: React.FC = () => {
       </div>
 
       <div
-        className="bg-darkprimary px-4 flex items-center justify-between relative shadow-md py-6 sm:py-6 md:py-8 min-h-[4rem] sm:min-h-[6rem] md:min-h-[7rem] w-full"
+        className="bg-darkprimary px-4 flex items-center justify-center relative shadow-md py-6 sm:py-6 md:py-8 min-h-[4rem] sm:min-h-[6rem] md:min-h-[7rem] w-full"
         style={{
           backgroundImage: "url('/images/cover2.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="logo font-inter font-semibold text-5xl md:text-6xl">
-          <div className="flex flex-col leading-4 md:leading-6 -mt-3 relative">
-            <span>CeylonBrief</span>
+        <div className="logo w-full flex justify-center items-center py-2">
+          <div className="flex  md:flex-row items-center gap-2 md:gap-4">
+            <span className="font-Cormorant font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight text-white drop-shadow-lg">
+              CeylonBrief |
+            </span>
+            <span className="font-inter font-light text-lg sm:text-2xl md:text-3xl text-white/90 mt-1 sm:mt-2 md:mt-3">
+               Latest News from Sri Lanka
+            </span>
           </div>
         </div>
         {/* Mobile Menu Toggle */}
@@ -104,6 +109,15 @@ const HeadSection: React.FC = () => {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/top-headlines/politics"
+                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Politics
                   </Link>
                 </li>
                 <li>
@@ -169,15 +183,7 @@ const HeadSection: React.FC = () => {
                     Technology
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/top-headlines/politics"
-                    className="block px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-darkprimary transition-colors duration-200 border-b border-gray-100 dark:border-gray-800"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Politics
-                  </Link>
-                </li>
+                
               </ul>
 
               {/* Search section in mobile menu */}
@@ -204,12 +210,15 @@ const HeadSection: React.FC = () => {
           </div>
         )}
 
-        {/* Mobile Mode Toggle - Outside the dropdown */}
+      
         <div className="md:hidden"></div>
       </div>
       <div className="sticky top-0 bg-darkprimary hidden md:flex justify-center items-center  gap-4 text-sm shadow-xs">
         <Link className="nav-link p-2" href={"/"}>
           Home
+        </Link>
+        <Link className="nav-link p-2" href={"/top-headlines/politics"}>
+          Politics
         </Link>
         <Link className="nav-link p-2" href={"/top-headlines/general"}>
           General
@@ -232,9 +241,7 @@ const HeadSection: React.FC = () => {
         <Link className="nav-link p-2" href={"/top-headlines/technology"}>
           Technology
         </Link>
-        <Link className="nav-link p-2" href={"/top-headlines/politics"}>
-          Politics
-        </Link>
+        
         {/* <Link className="nav-link p-2 bg-white/8" href={"/featured-news"}>
           Featured Articles
         </Link> */}
