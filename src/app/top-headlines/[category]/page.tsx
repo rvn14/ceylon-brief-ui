@@ -96,11 +96,11 @@ export default async function TopHeadlines({ params }: PageProps) {
   }
 
   return (
-    <div className="bg-background p-2 pt-16 min-h-screen">
+    <div className="bg-background p-2 md:p-16 md:px-28 pt-16 min-h-screen">
       <div className="font-semibold justify-center w-full items-center mb-8 px-6">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {category} Headlines
+            {category.charAt(0).toUpperCase() + category.slice(1)} Stories
           </h2>
           <div className="w-full h-1 bg-gradient-to-r from-red-600 to-red-500 rounded-full"></div>
         </div>
