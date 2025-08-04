@@ -1,34 +1,7 @@
 import React, { FC } from "react";
 import { AlertCircle } from "lucide-react";
-import PaginatedNewsList from "@/components/PaginatedNewsList";
-
-interface Article {
-  url: string;
-  content: string;
-  category: string;
-  id: string;
-  source: string;
-  cover_image: string;
-  date_published: string | { $date: string };
-  title: string;
-  week: string;
-}
-
-interface NewsItem {
-  _id: string;
-  id: string;
-  category: string;
-  url: string;
-  source: string;
-  cover_image: string;
-  date_published: string;
-  short_summary: string;
-  long_summary: string;
-  representative_title?: string;
-  title: string;
-  group_id?: string | null;
-  articles?: Article[];
-}
+import ClientPaginatedNews from "@/components/ClientPaginatedNews";
+import { NewsItem } from "@/types/news";
 
 type Props = {
   searchParams: {
@@ -103,7 +76,7 @@ const page: FC<Props> = async ({ searchParams }) => {
               </div>
             </div>
           )}
-          <PaginatedNewsList newsItems={data} />
+          <ClientPaginatedNews newsItems={data} />
         </>
       )}
     </div>

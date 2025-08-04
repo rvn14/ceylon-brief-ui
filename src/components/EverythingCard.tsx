@@ -4,7 +4,6 @@ import { FC, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface EverythingCardProps {
   title: string;
@@ -40,25 +39,20 @@ const EverythingCard: FC<EverythingCardProps> = ({
   return (
     <div className="shadow-lg rounded-lg overflow-hidden bg-white dark:bg-darkprimary w-full hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-800">
       <Link href={`/${category.toLowerCase()}/${id}`} className="w-full">
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden h-48 sm:h-56 md:h-60 lg:h-52 xl:h-60">
           {/* Blurred skeleton while image loads */}
           {!imgLoaded && (
-            <Skeleton className="w-full max-h-48 min-h-48 absolute inset-0 z-0" />
+            <div className="absolute inset-0 w-full h-full z-0 bg-red-400 rounded-none animate-pulse" />
           )}
-
-          {/* Next.js Image with blur placeholder */}
+          {/* Image */}
           <Image
-            width={600}
-            height={400}
+            fill
             src={imgUrl}
             alt={title}
-            className={`object-cover w-full object-center max-h-48 min-h-48 hover:scale-103 transition-transform duration-300 z-10 ${
-              imgLoaded ? "opacity-100" : "opacity-0"
-            }`}
-            placeholder="blur"
-            blurDataURL="/images/blur-placeholder.jpg" // Save your generated blur image here!
-            onLoadingComplete={() => setImgLoaded(true)}
-            priority={false} // Set to true only for above-the-fold images!
+            className={`object-cover transition-opacity duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
+            onLoad={() => setImgLoaded(true)}
+            priority={false}
+            style={{ borderRadius: 0 }}
           />
 
           {/* Category badge */}

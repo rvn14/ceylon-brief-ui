@@ -1,33 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import PaginatedNewsList from "@/components/PaginatedNewsList";
-
-interface Article {
-  url: string;
-  content: string;
-  category: string;
-  id: string;
-  source: string;
-  cover_image: string;
-  date_published: string | { $date: string };
-  title: string;
-  week: string;
-}
-
-interface NewsItem {
-  _id: string;
-  id: string;
-  category: string;
-  url: string;
-  source: string;
-  cover_image: string;
-  date_published: string;
-  short_summary: string;
-  long_summary: string;
-  representative_title?: string;
-  title: string;
-  group_id?: string | null;
-  articles?: Article[];
-}
+import ClientPaginatedNews from "@/components/ClientPaginatedNews";
+import { Article, NewsItem } from "@/types/news";
 
 interface TopHeadlineItem {
   _id: string;
@@ -106,7 +79,7 @@ export default async function TopHeadlines({ params }: PageProps) {
         </div>
       </div>
       <div className="flex flex-col justify-center items-center p-2">
-        <PaginatedNewsList newsItems={data} />
+        <ClientPaginatedNews newsItems={data} />
       </div>
     </div>
   );

@@ -1,35 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
 import EverythingCard from "./EverythingCard";
-
-interface Article {
-  url: string;
-  content: string;
-  category: string;
-  id: string;
-  source: string;
-  cover_image: string;
-  date_published: string | { $date: string };
-  title: string;
-  week: string;
-}
-
-interface NewsItem {
-  _id: string;
-  id: string;
-  category: string;
-  url: string;
-  source: string;
-  cover_image: string;
-  date_published: string;
-  short_summary: string;
-  long_summary: string;
-  representative_title?: string;
-  title: string;
-  group_id?: string | null;
-  articles?: Article[];
-}
+import { Article, NewsItem } from "@/types/news";
 
 
 interface PaginatedNewsListProps {
@@ -106,8 +80,8 @@ const PaginatedNewsList = ({ newsItems, currentPage, totalPages, onPageChange, i
       ) : (
         <>
           <div id="latest-news-grid" className="flex justify-center items-center p-4 relative">
-            <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 w-full max-w-8xl transition-opacity duration-200 ${isLoading ? 'opacity-30' : 'opacity-100'}`}>
-              {newsItems.slice(0, 20).map((element, index) => {
+            <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 w-full max-w-8xl transition-opacity duration-200 ${isLoading ? 'opacity-30' : 'opacity-100'}`}>
+              {newsItems.map((element, index) => {
                 const isGroup = Boolean(element.group_id);
                 if (isGroup && (!element.articles || element.articles.length === 0)) return null;
                 const urls = isGroup ? element.articles!.map((article) => article.url).join(",") : element.url;

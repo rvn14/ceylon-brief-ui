@@ -1,23 +1,10 @@
 
 import Highlights from "@/components/Highlights";
-import PaginatedNewsList from "@/components/PaginatedNewsList";
-
-// Consider moving this interface to a shared types file
-interface NewsItem {
-  id: string | number;
-  title: string;
-  content?: string;
-  summary?: string;
-  image?: string;
-  publishedAt?: string | Date;
-  source?: string;
-  url?: string;
-  author?: string;
-  category?: string;
-}
+import ClientPaginatedNews from "@/components/ClientPaginatedNews";
+import { LegacyNewsItem } from "@/types/news";
 
 const HomePage = async () => {
-  let data: NewsItem[] = [];
+  let data: LegacyNewsItem[] = [];
   let error: string | null = null;
 
   try {
@@ -57,7 +44,7 @@ const HomePage = async () => {
         </div>
       </div>
 
-      <PaginatedNewsList newsItems={newsData} />
+      <ClientPaginatedNews newsItems={newsData} />
     </div>
   );
 };

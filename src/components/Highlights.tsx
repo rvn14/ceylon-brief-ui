@@ -178,7 +178,7 @@ const Highlights = ({ news }: HighlightsProps) => {
             </div>
 
             <div className='col-span-2 grid grid-rows-2'>
-              {otherNews.slice(0, 2).map((newsItem, index) => (
+              {newsData.slice(1, 3).map((newsItem, index) => (
                 <div key={index} className='relative h-full overflow-hidden shadow-lg group'>
                   <Image 
                     src={newsItem.cover_image || "/images/News_web.jpg"}
@@ -190,7 +190,7 @@ const Highlights = ({ news }: HighlightsProps) => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1.5 text-xs font-semibold text-white bg-red-600 rounded-xs hover:bg-red-500 transition-colors duration-200">
-                      {politicNews[0]?.category}
+                      {newsItem?.category}
                     </span>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -212,7 +212,7 @@ const Highlights = ({ news }: HighlightsProps) => {
 
         {/* Grid of Categories */}
         {newsData && (
-          <section className='mb-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+          <section className='mb-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6'>
           <div className='flex flex-col'>
                 <div className='flex items-end justify-between w-full p-2'>
                   <h2 className='text-lg font-semibold'>Politics</h2>
