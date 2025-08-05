@@ -78,13 +78,13 @@ const HeadSection: React.FC = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="logo w-full flex justify-center items-center py-2">
-          <div className="flex  md:flex-row items-center gap-2 md:gap-4">
-            <span className="font-Cormorant font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight text-white drop-shadow-lg">
-              CeylonBrief |
+        <div className="logo w-full flex md:justify-center items-center py-2">
+          <div className="flex flex-col md:flex-row items-center gap-1 sm:gap-2 md:gap-4 ">
+            <span className="font-Cormorant font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-white drop-shadow-lg">
+              CeylonBrief
             </span>
-            <span className="font-inter font-light text-lg sm:text-2xl md:text-3xl text-white/90 mt-1 sm:mt-2 md:mt-3">
-               Latest News from Sri Lanka
+            <span className="font-inter font-light text-xs sm:text-lg md:text-2xl lg:text-3xl text-white/90 mt-1 md:mt-3 leading-0.5 ">
+              - Latest News from Sri Lanka -
             </span>
           </div>
         </div>

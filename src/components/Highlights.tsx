@@ -126,8 +126,8 @@ const Highlights = ({ news }: HighlightsProps) => {
       <div className="w-full mx-auto px-4">
         {/* Main Featured Article */}
         <section className='mb-8'>
-          <div className='grid grid-cols-5'>
-            <div className='col-span-3 relative h-120'> 
+          <div className='grid grid-cols-1 md:grid-cols-5'>
+            <div className='md:col-span-3 relative h-[320px] md:h-[480px] overflow-hidden'> 
                <Image 
                 src={politicSrc}
                 alt="Featured news"
@@ -136,13 +136,12 @@ const Highlights = ({ news }: HighlightsProps) => {
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-              
               {/* Live indicator */}
-              <div className="absolute top-6 left-6">
+              <div className="absolute top-4 left-4 md:top-6 md:left-6">
                 <LiveIndicator/>
               </div>
               {/* Content overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 lg:p-8">
                 <div className="mb-3">
                   <Link href={`/top-headlines/${politicNews[0]?.category?.toLowerCase()}`} 
                         className="inline-block">
@@ -177,9 +176,9 @@ const Highlights = ({ news }: HighlightsProps) => {
               </div>
             </div>
 
-            <div className='col-span-2 grid grid-rows-2'>
+            <div className='md:col-span-2 grid grid-rows-2'>
               {newsData.slice(1, 3).map((newsItem, index) => (
-                <div key={index} className='relative h-full overflow-hidden shadow-lg group'>
+                <div key={index} className='relative h-[200px] md:h-full overflow-hidden shadow-lg group'>
                   <Image 
                     src={newsItem.cover_image || "/images/News_web.jpg"}
                     alt={newsItem.title || "News Image"}
@@ -188,12 +187,12 @@ const Highlights = ({ news }: HighlightsProps) => {
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-2 left-2 sm:top-4 sm:left-4">
                     <span className="px-3 py-1.5 text-xs font-semibold text-white bg-red-600 rounded-xs hover:bg-red-500 transition-colors duration-200">
                       {newsItem?.category}
                     </span>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4">
                     <h2 className="text-lg font-bold text-white mb-2 line-clamp-2">
                       <Link href={`/${newsItem.category?.toLowerCase()}/${newsItem.id}`} className="hover:text-red-500 transition-colors duration-200">
                         {newsItem.title || newsItem.representative_title || "News Title"}
