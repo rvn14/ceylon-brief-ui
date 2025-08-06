@@ -127,7 +127,7 @@ const Highlights = ({ news }: HighlightsProps) => {
         {/* Main Featured Article */}
         <section className='mb-8'>
           <div className='grid grid-cols-1 md:grid-cols-5'>
-            <div className='md:col-span-3 relative aspect-[5/3] w-full overflow-hidden'> 
+            <div className='md:col-span-3 relative aspect-[5/3] w-full overflow-hidden group'> 
                <Image 
                 src={politicSrc}
                 alt="Featured news"
