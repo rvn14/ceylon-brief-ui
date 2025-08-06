@@ -58,7 +58,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
   return (
     <div className="shadow-lg relative rounded-lg overflow-hidden bg-white dark:bg-darkprimary w-full hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-800">
       <Link href={`/${category.toLowerCase()}/${id}`} className="w-full">
-        <div className="relative overflow-hidden h-48 sm:h-56 md:h-60 lg:h-52 xl:h-60">
+        <div className="relative overflow-hidden h-48 sm:h-56 md:h-60 lg:h-52 xl:h-60 group">
           {/* Blurred skeleton while image loads */}
           {!imgLoaded && (
             <div className="absolute inset-0 w-full h-full z-0 bg-red-400 rounded-none animate-pulse" />
@@ -68,7 +68,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
             fill
             src={imgUrl}
             alt={title}
-            className={`object-cover transition-opacity duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
+            className={`object-cover transition-all duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"} group-hover:scale-105 duration-300`}
             onLoad={() => setImgLoaded(true)}
             priority={false}
             style={{ borderRadius: 0 }}
