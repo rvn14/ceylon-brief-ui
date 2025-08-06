@@ -56,7 +56,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
   const [descRef, isDescClamped] = useIsClamped<HTMLParagraphElement>();
 
   return (
-    <div className="shadow-lg rounded-lg overflow-hidden bg-white dark:bg-darkprimary w-full hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-800">
+    <div className="shadow-lg relative rounded-lg overflow-hidden bg-white dark:bg-darkprimary w-full hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-800">
       <Link href={`/${category.toLowerCase()}/${id}`} className="w-full">
         <div className="relative overflow-hidden h-48 sm:h-56 md:h-60 lg:h-52 xl:h-60">
           {/* Blurred skeleton while image loads */}
@@ -76,14 +76,14 @@ const EverythingCard: FC<EverythingCardProps> = ({
 
           {/* Category badge */}
           <div className="absolute top-4 left-4 z-20">
-            <span className="bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wider">
+            <span className="bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-xs">
               {category}
             </span>
           </div>
         </div>
 
         {/* Content section */}
-        <div className="p-5 flex flex-col gap-2">
+        <div className="p-5 flex flex-col gap-2 pb-8">
           {/* Title with tooltip only if clamped */}
           {isTitleClamped ? (
             <Tooltip delayDuration={1000}>
@@ -138,10 +138,10 @@ const EverythingCard: FC<EverythingCardProps> = ({
           )}
 
           {/* Read more */}
-          <div className="mt-auto pt-2">
+          <div className="mt-auto absolute bottom-2 left-5">
             <span className="text-red-600 dark:text-red-400 text-sm font-medium hover:underline flex items-center cursor-pointer">
               Read full story
-              <ArrowRightIcon size={14} />
+              <ArrowRightIcon className="mt-1" size={14} />
             </span>
           </div>
         </div>
