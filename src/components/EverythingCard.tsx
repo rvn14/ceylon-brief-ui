@@ -1,9 +1,10 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface EverythingCardProps {
   title: string;
@@ -17,6 +18,21 @@ interface EverythingCardProps {
   category: string;
   url?: string | null;
   author?: string | null;
+}
+
+// Utility hook to check if an element is clamped
+function useIsClamped<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [clamped, setClamped] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // For multi-line clamp, check scrollHeight > clientHeight
+    setClamped(el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth);
+  }, []);
+
+  return [ref, clamped] as const;
 }
 
 const EverythingCard: FC<EverythingCardProps> = ({
@@ -35,6 +51,9 @@ const EverythingCard: FC<EverythingCardProps> = ({
     month: "short",
     day: "numeric",
   });
+
+  const [titleRef, isTitleClamped] = useIsClamped<HTMLHeadingElement>();
+  const [descRef, isDescClamped] = useIsClamped<HTMLParagraphElement>();
 
   return (
     <div className="shadow-lg rounded-lg overflow-hidden bg-white dark:bg-darkprimary w-full hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-800">
@@ -65,20 +84,58 @@ const EverythingCard: FC<EverythingCardProps> = ({
 
         {/* Content section */}
         <div className="p-5 flex flex-col gap-2">
-          {/* Title */}
-          <h2 className="font-serif font-bold text-xl mb-2 line-clamp-2 text-gray-800 dark:text-white">
-            {title}
-          </h2>
+          {/* Title with tooltip only if clamped */}
+          {isTitleClamped ? (
+            <Tooltip delayDuration={1000}>
+              <TooltipTrigger asChild>
+                <h2
+                  ref={titleRef}
+                  className="font-serif font-bold text-xl mb-2 line-clamp-2 text-gray-800 dark:text-white"
+                >
+                  {title}
+                </h2>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-[320px] w-full">
+                <span>{title}</span>
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <h2
+              ref={titleRef}
+              className="font-serif font-bold text-xl mb-2 line-clamp-2 text-gray-800 dark:text-white"
+            >
+              {title}
+            </h2>
+          )}
 
           {/* Meta info */}
           <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
             <span className="mr-3">{formattedDate}</span>
           </div>
 
-          {/* Description */}
-          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
-            {description}
-          </p>
+          {/* Description with tooltip only if clamped */}
+          {isDescClamped ? (
+            <Tooltip delayDuration={1000}>
+              <TooltipTrigger asChild>
+                <p
+                  ref={descRef}
+                  className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3"
+                >
+                  {description}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-[320px] w-full">
+                <span>{description}</span>
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <p
+              ref={descRef}
+              className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3"
+            >
+              {description}
+            </p>
+          )}
 
           {/* Read more */}
           <div className="mt-auto pt-2">
