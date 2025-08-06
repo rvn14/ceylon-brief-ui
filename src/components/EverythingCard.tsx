@@ -95,7 +95,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
                   {title}
                 </h2>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[400px] w-full">
+              <TooltipContent className="w-fit max-w-xs break-words">
                 <span>{title}</span>
               </TooltipContent>
             </Tooltip>
@@ -124,7 +124,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
                   {description}
                 </p>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[320px] w-full">
+              <TooltipContent className="w-fit max-w-xs break-words">
                 <span>{description}</span>
               </TooltipContent>
             </Tooltip>
