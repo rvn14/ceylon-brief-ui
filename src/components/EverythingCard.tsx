@@ -95,7 +95,7 @@ const EverythingCard: FC<EverythingCardProps> = ({
                   {title}
                 </h2>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[320px] w-full">
+              <TooltipContent className="max-w-[400px] w-full">
                 <span>{title}</span>
               </TooltipContent>
             </Tooltip>
