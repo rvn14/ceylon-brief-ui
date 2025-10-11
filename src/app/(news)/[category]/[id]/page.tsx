@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Globe } from "lucide-react";
+import { buildMetadata } from "@/utils/seo";
 
 interface Article {
   url: string;
@@ -30,10 +31,115 @@ interface NewsItem {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     category: string;
     id: string;
-  };
+  }>;
+}
+
+type FetchNewsResult = {
+  news: NewsItem | null;
+  error: string | null;
+};
+
+const fetchNewsItem = async (
+  category: string,
+  id: string
+): Promise<FetchNewsResult> => {
+  let news: NewsItem | null = null;
+  let error: string | null = null;
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news?category=${encodeURIComponent(category)}&id=${encodeURIComponent(id)}`,
+      {
+        next: { revalidate: 60 },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (result.success) {
+      news = result.data;
+    } else {
+      error = result.message || "An error occurred";
+    }
+  } catch (err) {
+    console.error("Fetch error:", err);
+    error = "Failed to fetch news. Please try again later.";
+  }
+
+  return { news, error };
+};
+
+export async function generateMetadata({ params }: PageProps) {
+  const { category, id } = await params;
+  const formattedCategory =
+    category.charAt(0).toUpperCase() + category.slice(1);
+  const { news } = await fetchNewsItem(formattedCategory, id);
+
+  if (!news) {
+    return buildMetadata({
+      title: `${formattedCategory} Story`,
+      description: `Read the latest ${formattedCategory.toLowerCase()} updates on CeylonBrief.`,
+      path: `/${category}/${id}`,
+      type: "article",
+      keywords: [`${formattedCategory} news`, "CeylonBrief"],
+    });
+  }
+
+  const isGroup = Boolean(news.group_id && news.articles?.length);
+  const primaryArticle = isGroup ? news.articles?.[0] : null;
+
+  const title = isGroup
+    ? news.representative_title ?? primaryArticle?.title ?? news.title
+    : news.title;
+
+  const description =
+    news.short_summary ??
+    news.long_summary ??
+    primaryArticle?.content ??
+    `Stay informed on ${formattedCategory.toLowerCase()} news with CeylonBrief.`;
+
+  const coverImage = (isGroup
+    ? primaryArticle?.cover_image ?? news.cover_image
+    : news.cover_image) || DEFAULT_ARTICLE_IMAGE;
+
+  const publishedValue = isGroup
+    ? primaryArticle?.date_published
+    : news.date_published;
+
+  const publishedTime =
+    typeof publishedValue === "string"
+      ? publishedValue
+      : typeof publishedValue === "object" && publishedValue !== null && "$date" in publishedValue
+      ? new Date(publishedValue.$date).toISOString()
+      : undefined;
+
+  const keywords = [
+    `${formattedCategory} news`,
+    news.title,
+    "CeylonBrief",
+  ].filter(Boolean) as string[];
+
+  const tags = [
+    formattedCategory,
+    ...(news.category ? [news.category] : []),
+  ];
+
+  return buildMetadata({
+    title,
+    description,
+    path: `/${category}/${id}`,
+    images: coverImage,
+    type: "article",
+    publishedTime,
+    keywords,
+    tags,
+  });
 }
 
 const formatDate = (
@@ -73,6 +179,8 @@ const formatDate = (
     return "Invalid date";
   }
 };
+
+const DEFAULT_ARTICLE_IMAGE = "/images/News_web.jpg";
 
 const getSourceIcon = (url: string) => {
   if (!url) return <Globe className="h-6 w-6" />;
@@ -146,33 +254,9 @@ const getSourceIcon = (url: string) => {
 const page = async ({ params }: PageProps) => {
   const { id, category } = await params;
 
-  const formatedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+  const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
 
-  let news: NewsItem | null = null;
-  let error: string | null = null;
-
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news?category=${formatedCategory}&id=${id}`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`API responded with status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    if (result.success) {
-      news = result.data;
-    } else {
-      error = result.message || "An error occurred";
-    }
-  } catch (err) {
-    console.error("Fetch error:", err);
-    error = "Failed to fetch news. Please try again later.";
-  }
+  const { news, error } = await fetchNewsItem(formattedCategory, id);
 
   if (!news) {
     return (
@@ -226,19 +310,17 @@ const page = async ({ params }: PageProps) => {
         </h1>
 
         {/* Image */}
-        {(isGroup
-          ? news.articles && news.articles[0].cover_image
-          : news.cover_image) && (
-          <div className="w-full flex justify-center mb-8">
-            <Image
-              className="w-full max-w-md h-auto object-cover rounded-lg shadow-lg"
-              src={isGroup ? news.articles![0].cover_image : news.cover_image}
-              alt={mainArticle?.title ?? "News cover image"}
-              width={600}
-              height={400}
-            />
-          </div>
-        )}
+        <div className="w-full flex justify-center mb-8">
+          <Image
+            className="w-full max-w-md h-auto object-cover rounded-lg shadow-lg"
+            src={isGroup ? news.articles?.[0]?.cover_image || DEFAULT_ARTICLE_IMAGE : news.cover_image || DEFAULT_ARTICLE_IMAGE}
+            alt={mainArticle?.title ?? "News cover image"}
+            width={600}
+            height={400}
+            priority
+            sizes="(max-width: 768px) 100vw, 600px"
+          />
+        </div>
 
         {/* Summary */}
         <section className="pt-4 w-full">

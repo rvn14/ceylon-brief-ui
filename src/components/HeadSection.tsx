@@ -78,7 +78,12 @@ const HeadSection: React.FC = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="logo w-full flex md:justify-center items-center py-2">
+        <Link
+          href="/"
+          prefetch
+          className="logo w-full flex md:justify-center items-center py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 rounded-md"
+          aria-label="CeylonBrief home"
+        >
           <div className="flex flex-col md:flex-row items-center gap-1 sm:gap-2 md:gap-4 ">
             <span className="font-Cormorant font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-white drop-shadow-lg">
               CeylonBrief
@@ -87,7 +92,7 @@ const HeadSection: React.FC = () => {
               - Latest News from Sri Lanka -
             </span>
           </div>
-        </div>
+        </Link>
         {/* Mobile Menu Toggle */}
         <div className="md:hidden ml-auto self-center flex items-center">
           <button onClick={toggleMobileMenu} className="text-white">

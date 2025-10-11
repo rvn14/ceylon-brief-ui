@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
-
 
 @custom-variant dark (&:is(.dark *));
 
@@ -18,9 +17,9 @@
   --color-maroon-100: #fef0f0;
   --color-maroon-50: #fff5f5;
 
-  --font-Cormorant: 'Cormorant Unicase', serif;
+  --font-Cormorant: "Cormorant Unicase", serif;
   --font-nirmala: "Nirmala", sans-serif;
-  --font-inter: 'Inter', sans-serif;
+  --font-inter: "Inter", sans-serif;
   --color-darkprimary: #1c1c1c;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -62,12 +61,12 @@
 }
 
 @font-face {
-  font-family: 'Nirmala';
-  src: url(/fonts/nirmala.ttf) format('truetype');
+  font-family: "Nirmala";
+  src: url(/fonts/nirmala.ttf) format("truetype");
 }
 @font-face {
-  font-family: 'Yaldewi';
-  src: url(/fonts/yaldevi.ttf) format('truetype');
+  font-family: "Yaldewi";
+  src: url(/fonts/yaldevi.ttf) format("truetype");
 }
 
 :root {
@@ -152,13 +151,12 @@
   @apply hover:bg-white/4 p-4 px-3 cursor-pointer flex items-center;
 }
 
-body{
+body {
   @apply font-inter;
-
 }
 
 /* Custom Scrollbar Styles */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
@@ -180,13 +178,13 @@ body{
 
 ::-webkit-scrollbar-corner {
   background: var(--muted);
-}
+} */
 
 /* Firefox scrollbar */
-* {
+/* * {
   scrollbar-width: thin;
   scrollbar-color: var(--muted-foreground) var(--muted);
-}
+} */
 
 body {
   overflow-x: hidden;
@@ -328,8 +326,12 @@ ul li ul li a:hover {
   align-items: center;
 }
 
-.fa-moon {color: #f1c40f;}
-.fa-sun {color: #f39c12;}
+.fa-moon {
+  color: #f1c40f;
+}
+.fa-sun {
+  color: #f39c12;
+}
 
 .checkbox-label .ball {
   background-color: #fff;
@@ -380,22 +382,19 @@ ul li ul li a:hover {
 .everything-card {
   width: 300px;
   height: 400px;
-  background:var(--primary);
+  background: var(--primary);
   overflow: hidden;
   border-radius: 15px;
   object-position: center;
-  box-shadow: 
-      0 0 10px rgba(0, 0, 0, 0.5),
-      0 0 10px rgba(0, 0, 0, 0.5),
-      0 0 10px rgba(0, 0, 0, 0.5),
-      0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .everything-card:hover {
   transform: translateY(-2px);
   transition: transform 0.2s ease-in-out;
   background: var(--primary);
-  box-shadow: 0 0 11px grey; 
+  box-shadow: 0 0 11px grey;
 }
 
 .everything-card-img {
@@ -403,7 +402,7 @@ ul li ul li a:hover {
   height: 150px;
   border-radius: 10px;
   object-fit: cover;
-  object-position: center; 
+  object-position: center;
 }
 
 .title {
@@ -412,7 +411,7 @@ ul li ul li a:hover {
   font-size: 20px;
 }
 
-.today-header{
+.today-header {
   font-family: "Freeman", sans-serif;
   padding-top: 100px;
   padding-left: 25px;
@@ -420,7 +419,7 @@ ul li ul li a:hover {
   font-size: 30px;
 }
 
-.container{
+.container {
   font-family: "Freeman", sans-serif;
   padding-top: 100px;
   padding-left: 25px;
@@ -428,18 +427,15 @@ ul li ul li a:hover {
   font-size: 25px;
 }
 
-.description{
+.description {
   font-size: 12px;
-
 }
 
-.info{
-  font-size:10px;
+.info {
+  font-size: 10px;
   line-height: 1.1;
   margin-bottom: 0.25rem;
 }
-
-
 
 /* search  */
 .search-form {
@@ -493,7 +489,7 @@ ul li ul li a:hover {
 /* Loader */
 .loader-container {
   height: 100vh;
-  padding: 0; 
+  padding: 0;
   align-items: center;
 }
 
@@ -502,19 +498,22 @@ ul li ul li a:hover {
   aspect-ratio: 1;
   display: grid;
   color: var(--heading);
-  background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
+  background: radial-gradient(
+    farthest-side,
+    currentColor calc(100% - 6px),
+    #0000 calc(100% - 5px) 0
+  );
   /* -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px)); */
   border-radius: 50%;
   animation: l19 2s infinite linear;
 }
 
 .loader::before,
-.loader::after {    
+.loader::after {
   content: "";
   grid-area: 1/1;
-  background:
-      linear-gradient(currentColor 0 0) center,
-      linear-gradient(currentColor 0 0) center;
+  background: linear-gradient(currentColor 0 0) center,
+    linear-gradient(currentColor 0 0) center;
   background-size: 100% 10px, 10px 100%;
   background-repeat: no-repeat;
 }
@@ -523,66 +522,68 @@ ul li ul li a:hover {
   transform: rotate(45deg);
 }
 
-@keyframes l19 { 
-  100% { transform: rotate(1turn) }
+@keyframes l19 {
+  100% {
+    transform: rotate(1turn);
+  }
 }
 
 /* Responsive styles */
 @media (max-width: 1024px) {
   .cards {
-      place-items: center;
+    place-items: center;
   }
 }
 
 @media only screen and (min-width: 640px) and (max-width: 689px) {
   nav {
-      justify-content: space-between !important;
-      padding: 0 5% !important;
+    justify-content: space-between !important;
+    padding: 0 5% !important;
   }
 }
 
 @media (max-width: 689px) {
   .btn {
-      width: 80px;
-      height: 40px;
+    width: 80px;
+    height: 40px;
   }
 
   .search-box {
-      height: 39px;
-      width: 70%;
+    height: 39px;
+    width: 70%;
   }
 
   .ham-burger {
-      display: block;
+    display: block;
   }
 
   nav ul {
-      display: none;
-      flex-direction: column;
-      position: fixed;
-      top: 70px;
-      left: -100%;
-      width: 100%;
-      height: calc(100vh - 70px);
-      background-color: var(--primary);
-      z-index: 1;
-      padding: 25% 10%;
-      transition: 0.3s;
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background-color: var(--primary);
+    z-index: 1;
+    padding: 25% 10%;
+    transition: 0.3s;
   }
 
   nav ul.active {
-      left: 0;
-      display: flex;
+    left: 0;
+    display: flex;
   }
 
   .everything-card {
-      width: 350px;
+    width: 350px;
   }
 }
 
 @media (max-width: 480px) {
   .everything-card {
-      width: 90%;
+    width: 90%;
   }
 }
 
@@ -590,8 +591,3 @@ img {
   max-width: 100%;
   height: auto;
 }
-
-
-
-
-  

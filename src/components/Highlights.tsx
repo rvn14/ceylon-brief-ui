@@ -26,7 +26,33 @@ interface HighlightsProps {
 
 const Highlights = ({ news }: HighlightsProps) => {
     const newsData = news || [];
-    
+
+    const buildArticleHref = (item?: NewsItem) => {
+      if (!item?.category || item.id === undefined || item.id === null) {
+        return "/";
+      }
+      return `/${item.category.toLowerCase()}/${item.id}`;
+    };
+
+    const buildCategoryHref = (category?: string) => {
+      if (!category) {
+        return "/";
+      }
+      return `/top-headlines/${category.toLowerCase()}`;
+    };
+
+    const resolveImageSrc = (item?: NewsItem) => {
+      if (!item) {
+        return "/images/News_web.jpg";
+      }
+
+      if (item.group_id && item.articles?.[0]?.cover_image) {
+        return item.articles[0].cover_image;
+      }
+
+      return item.cover_image || "/images/News_web.jpg";
+    };
+
     const politicNews = newsData.filter((item) => item?.category === "Politics").slice(0, 3)
     const businessNews = newsData.filter((item) => item?.category === "Business").slice(0, 3)
     const sportsNews = newsData.filter((item) => item?.category === "Sports").slice(0, 3)
@@ -35,17 +61,20 @@ const Highlights = ({ news }: HighlightsProps) => {
     const technologyNews = newsData.filter((item) => item?.category === "Technology").slice(0, 3)
     const entertainmentNews = newsData.filter((item) => item?.category === "Entertainment").slice(0, 3)
 
-    
+    const leadStory = politicNews[0] ?? newsData[0];
+    if (!leadStory) {
+      return null;
+    }
 
-    const otherNews = [
-      ...businessNews,
-      ...sportsNews,
-      ...scienceNews,
-      ...healthNews,
-      ...technologyNews,
-      ...entertainmentNews
-    ].filter(Boolean);
-    
+    const leadHref = buildArticleHref(leadStory);
+    const leadCategoryHref = buildCategoryHref(leadStory.category);
+    const secondaryNews = newsData.filter((item) => item !== leadStory).slice(0, 2);
+    const leadImageSrc = resolveImageSrc(leadStory);
+    const leadTitle =
+      leadStory.group_id
+        ? leadStory.representative_title || leadStory.title || "News Title"
+        : leadStory.title || "News Title";
+    const leadSummary = leadStory.short_summary || leadStory.long_summary || "";
     
     const formatDate = (dateValue: string | { $date: string } | null | undefined): string => {
       if (!dateValue) return "Unknown date";
@@ -111,57 +140,55 @@ const Highlights = ({ news }: HighlightsProps) => {
       </div>
     );
 
-    const politicSrc = politicNews[0]?.group_id
-                  ? politicNews[0]?.articles?.[0]?.cover_image ||
-                    "/images/News_web.jpg"
-                  : politicNews[0]?.cover_image ||
-                    "/images/News_web.jpg"
-
-
-
-      
-
-
     return (
       <div className="w-full mx-auto px-4">
         {/* Main Featured Article */}
         <section className='mb-8'>
-          <div className='grid grid-cols-1 md:grid-cols-5'>
-            <div className='md:col-span-3 relative aspect-[5/3] w-full overflow-hidden group'> 
-               <Image 
-                src={politicSrc}
-                alt="Featured news"
-                fill
-                sizes="(max-width: 1024px) 100vw, 1200px"
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-              {/* Live indicator */}
-              <div className="absolute top-4 left-4 md:top-6 md:left-6">
-                <LiveIndicator/>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-5 md:gap-6'>
+            <article className='md:col-span-3 relative aspect-[5/3] w-full overflow-hidden group'>
+              <Link
+                href={leadHref}
+                className="absolute inset-0 block"
+                prefetch
+              >
+                <Image
+                  src={leadImageSrc}
+                  alt={leadTitle}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 1200px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <span className="sr-only">
+                  {`Read ${leadTitle}`}
+                </span>
+              </Link>
+
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+              <div className="pointer-events-none absolute top-4 left-4 md:top-6 md:left-6">
+                <LiveIndicator />
               </div>
-              {/* Content overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 lg:p-8">
-                <div className="mb-3">
-                  <Link href={`/top-headlines/${politicNews[0]?.category?.toLowerCase()}`} 
-                        className="inline-block">
+
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 lg:p-8 pointer-events-none">
+                <div className="mb-3 pointer-events-auto">
+                  <Link href={leadCategoryHref} prefetch className="inline-block">
                     <span className="px-3 py-1.5 text-xs font-semibold text-white bg-red-600 rounded-xs hover:bg-red-500 transition-colors duration-200">
-                      {politicNews[0]?.category}
+                      {leadStory.category || "News"}
                     </span>
                   </Link>
                 </div>
                 <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold mb-3 leading-tight text-white">
-                  <a href={`/${politicNews[0]?.category?.toLowerCase()}/${politicNews[0]?.id}`} 
-                     className="hover:text-red-500 transition-colors duration-300">
-                    {politicNews[0]?.group_id
-                      ? politicNews[0].representative_title || "News Title"
-                      : politicNews[0]?.title || "News Title"}
-                  </a>
+                  <Link
+                    href={leadHref}
+                    prefetch
+                    className="hover:text-red-500 transition-colors duration-300"
+                  >
+                    {leadTitle}
+                  </Link>
                 </h1>
                 <p className="text-gray-200 text-base lg:text-md leading-relaxed mb-4 line-clamp-2 max-w-4xl">
-                  {politicNews[0]?.group_id
-                    ? politicNews[0]?.short_summary || ""
-                    : politicNews[0]?.short_summary || ""}
+                  {leadSummary}
                 </p>
                 <div className="flex items-center gap-3 text-sm text-gray-300">
                   <div className="flex items-center gap-2">
@@ -171,40 +198,62 @@ const Highlights = ({ news }: HighlightsProps) => {
                     <span className="font-medium">Ceylon Brief</span>
                   </div>
                   <span>•</span>
-                  <span>{getPublishedDate(politicNews[0])}</span>
+                  <span>{getPublishedDate(leadStory)}</span>
                 </div>
               </div>
-            </div>
+            </article>
 
-            <div className='md:col-span-2 grid grid-rows-2'>
-              {newsData.slice(1, 3).map((newsItem, index) => (
-                <div key={index} className='relative h-[200px] md:h-full overflow-hidden shadow-lg group'>
-                  <Image 
-                    src={newsItem.cover_image || "/images/News_web.jpg"}
-                    alt={newsItem.title || "News Image"}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 600px"
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                  <div className="absolute top-2 left-2 sm:top-4 sm:left-4">
-                    <span className="px-3 py-1.5 text-xs font-semibold text-white bg-red-600 rounded-xs hover:bg-red-500 transition-colors duration-200">
-                      {newsItem?.category}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4">
-                    <h2 className="text-lg font-bold text-white mb-2 line-clamp-2">
-                      <Link href={`/${newsItem.category?.toLowerCase()}/${newsItem.id}`} className="hover:text-red-500 transition-colors duration-200">
-                        {newsItem.title || newsItem.representative_title || "News Title"}
+            <div className='md:col-span-2 grid grid-rows-2 gap-4'>
+              {secondaryNews.map((newsItem, index) => {
+                const articleHref = buildArticleHref(newsItem);
+                return (
+                  <article key={index} className='relative h-[200px] md:h-full overflow-hidden shadow-lg group'>
+                    <Link
+                      href={articleHref}
+                      className="absolute inset-0 block"
+                      prefetch
+                    >
+                      <Image
+                        src={resolveImageSrc(newsItem)}
+                        alt={newsItem.title || newsItem.representative_title || "News Image"}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 600px"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <span className="sr-only">
+                        {`Read ${newsItem.title || newsItem.representative_title || "news story"}`}
+                      </span>
+                    </Link>
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="pointer-events-none absolute top-2 left-2 sm:top-4 sm:left-4">
+                      <Link
+                        href={buildCategoryHref(newsItem?.category)}
+                        prefetch
+                        className="pointer-events-auto px-3 py-1.5 text-xs font-semibold text-white bg-red-600 rounded-xs hover:bg-red-500 transition-colors duration-200"
+                      >
+                        {newsItem?.category}
                       </Link>
-                    </h2>
-                    <p className="text-gray-200 text-xs mb-2 line-clamp-2">{newsItem.short_summary || ""}</p>
-                    <div className="flex items-center gap-2 text-xs text-gray-300">
-                      <span>{getPublishedDate(newsItem)}</span>
                     </div>
-                  </div>
-                </div>
-              ))}
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4 pointer-events-none">
+                      <h2 className="text-lg font-bold text-white mb-2 line-clamp-2">
+                        <Link
+                          href={articleHref}
+                          prefetch
+                          className="pointer-events-auto hover:text-red-500 transition-colors duration-200"
+                        >
+                          {newsItem.title || newsItem.representative_title || "News Title"}
+                        </Link>
+                      </h2>
+                      <p className="text-gray-200 text-xs mb-2 line-clamp-2">
+                        {newsItem.short_summary || ""}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-gray-300">
+                        <span>{getPublishedDate(newsItem)}</span>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>

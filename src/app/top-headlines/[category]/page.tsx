@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import ClientPaginatedNews from "@/components/ClientPaginatedNews";
+import PaginatedNews from "@/components/PaginatedNews";
 import { Article, NewsItem } from "@/types/news";
+import { buildMetadata } from "@/utils/seo";
 
 interface TopHeadlineItem {
   _id: string;
@@ -19,15 +19,39 @@ interface TopHeadlineItem {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     category: string;
-  };
+  }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function TopHeadlines({ params }: PageProps) {
+
+export async function generateMetadata({ params }: PageProps) {
   const { category } = await params;
-  const formattedCatogory =
+  const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+
+  return buildMetadata({
+    title: `${formattedCategory} Headlines`,
+    description: `Catch up on the latest ${formattedCategory.toLowerCase()} stories curated by CeylonBrief.`,
+    path: `/top-headlines/${category}`,
+    keywords: [
+      `${formattedCategory} news`,
+      `Sri Lanka ${formattedCategory.toLowerCase()}`,
+      `${formattedCategory} headlines`
+    ],
+  });
+}
+
+export default async function TopHeadlines({ params, searchParams }: PageProps) {
+  const { category } = await params;
+  const formattedCategory =
     category.charAt(0).toUpperCase() + category.slice(1);
+
+  const queryParams = await searchParams;
+  const pageParam = queryParams.page;
+  const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam;
+  const pageNumber = Number.parseInt(pageValue ?? "1", 10);
+  const currentPage = Number.isFinite(pageNumber) && pageNumber > 0 ? pageNumber : 1;
 
   let data: NewsItem[] = [];
   let error = null;
@@ -36,7 +60,7 @@ export default async function TopHeadlines({ params }: PageProps) {
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_API_BASE_URL
-      }/news?category=${encodeURIComponent(formattedCatogory || "general")}`,
+      }/news?category=${encodeURIComponent(formattedCategory || "general")}`,
       { cache: "no-store" }
     );
 
@@ -73,13 +97,25 @@ export default async function TopHeadlines({ params }: PageProps) {
       <div className="font-semibold justify-center w-full items-center mb-8 px-6">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {category.charAt(0).toUpperCase() + category.slice(1)} Stories
+            {formattedCategory} Stories
           </h2>
           <div className="w-full h-1 bg-gradient-to-r from-red-600 to-red-500 rounded-full"></div>
         </div>
       </div>
+
+      {error ? (
+        <div className="w-full max-w-4xl mx-auto mb-6 rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {error}
+        </div>
+      ) : null}
+
       <div className="flex flex-col justify-center items-center p-2">
-        <ClientPaginatedNews newsItems={data} />
+        <PaginatedNews
+          newsItems={data}
+          currentPage={currentPage}
+          basePath={`/top-headlines/${category}`}
+          searchParams={queryParams}
+        />
       </div>
     </div>
   );

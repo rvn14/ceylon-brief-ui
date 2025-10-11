@@ -1,152 +1,96 @@
-"use client";
-
-import { FC, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface EverythingCardProps {
   title: string;
   description: string;
-  summary: string;
+  summary?: string;
   imgUrl: string;
   publishedDate: string;
-  newsProvider: string | null;
-  source: string;
+  newsProvider?: string | null;
   id: string;
   category: string;
-  url?: string | null;
-  author?: string | null;
 }
 
-// Utility hook to check if an element is clamped
-function useIsClamped<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [clamped, setClamped] = useState(false);
+const formatDisplayDate = (value: string) => {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    // For multi-line clamp, check scrollHeight > clientHeight
-    setClamped(el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth);
-  }, []);
-
-  return [ref, clamped] as const;
-}
-
-const EverythingCard: FC<EverythingCardProps> = ({
-  title,
-  imgUrl,
-  description,
-  category,
-  id,
-  publishedDate,
-}) => {
-  const [imgLoaded, setImgLoaded] = useState(false);
-
-  // Format date for readability
-  const formattedDate = new Date(publishedDate).toLocaleDateString("en-US", {
+  return parsed.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
+};
 
-  const [titleRef, isTitleClamped] = useIsClamped<HTMLHeadingElement>();
-  const [descRef, isDescClamped] = useIsClamped<HTMLParagraphElement>();
+const EverythingCard = ({
+  title,
+  description,
+  summary,
+  imgUrl,
+  publishedDate,
+  newsProvider,
+  id,
+  category,
+}: EverythingCardProps) => {
+  const formattedDate = formatDisplayDate(publishedDate);
+  const href = `/${category.toLowerCase()}/${id}`;
 
   return (
-    <div className="shadow-lg relative rounded-lg overflow-hidden bg-white dark:bg-darkprimary w-full hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-800">
-      <Link href={`/${category.toLowerCase()}/${id}`} className="w-full">
-        <div className="relative overflow-hidden h-48 sm:h-56 md:h-60 lg:h-52 xl:h-60 group">
-          {/* Blurred skeleton while image loads */}
-          {!imgLoaded && (
-            <div className="absolute inset-0 w-full h-full z-0 bg-red-400 rounded-none animate-pulse" />
-          )}
-          {/* Image */}
+    <article className="shadow-lg relative rounded-lg overflow-hidden bg-white dark:bg-darkprimary w-full hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-800">
+      <Link href={href} className="flex h-full flex-col">
+        <div className="relative h-48 sm:h-56 md:h-60 lg:h-52 xl:h-60 overflow-hidden group">
           <Image
             fill
             src={imgUrl}
             alt={title}
-            className={`object-cover transition-all duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"} group-hover:scale-105 duration-300`}
-            onLoad={() => setImgLoaded(true)}
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             priority={false}
-            style={{ borderRadius: 0 }}
           />
-
-          {/* Category badge */}
-          <div className="absolute top-4 left-4 z-20">
-            <span className="bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-xs">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-80" />
+          <div className="absolute top-4 left-4 z-10">
+            <span className="bg-red-600 text-white px-3 py-1 text-xs font-semibold uppercase tracking-wide">
               {category}
             </span>
           </div>
         </div>
 
-        {/* Content section */}
-        <div className="p-5 flex flex-col gap-2 pb-8">
-          {/* Title with tooltip only if clamped */}
-          {isTitleClamped ? (
-            <Tooltip delayDuration={1000}>
-              <TooltipTrigger asChild>
-                <h2
-                  ref={titleRef}
-                  className="font-serif font-bold text-xl mb-2 line-clamp-2 text-gray-800 dark:text-white"
-                >
-                  {title}
-                </h2>
-              </TooltipTrigger>
-              <TooltipContent className="w-fit max-w-xs break-words">
-                <span>{title}</span>
-              </TooltipContent>
-            </Tooltip>
-          ) : (
+        <div className="flex flex-1 flex-col gap-4 p-5 pb-14">
+          <header>
             <h2
-              ref={titleRef}
-              className="font-serif font-bold text-xl mb-2 line-clamp-2 text-gray-800 dark:text-white"
+              className="font-serif font-bold text-xl mb-2 line-clamp-2 text-gray-900 dark:text-white"
+              title={title}
             >
               {title}
             </h2>
-          )}
+            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 gap-3">
+              <span>{formattedDate}</span>
+              {newsProvider ? (
+                <span className="truncate max-w-[10rem]" title={newsProvider}>
+                  {newsProvider}
+                </span>
+              ) : null}
+            </div>
+          </header>
 
-          {/* Meta info */}
-          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
-            <span className="mr-3">{formattedDate}</span>
-          </div>
+          <p
+            className="text-gray-600 dark:text-gray-300 text-sm line-clamp-4"
+            title={summary ?? description}
+          >
+            {description}
+          </p>
 
-          {/* Description with tooltip only if clamped */}
-          {isDescClamped ? (
-            <Tooltip delayDuration={1000}>
-              <TooltipTrigger asChild>
-                <p
-                  ref={descRef}
-                  className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3"
-                >
-                  {description}
-                </p>
-              </TooltipTrigger>
-              <TooltipContent className="w-fit max-w-xs break-words">
-                <span>{description}</span>
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <p
-              ref={descRef}
-              className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3"
-            >
-              {description}
-            </p>
-          )}
-
-          {/* Read more */}
-          <div className="mt-auto absolute bottom-2 left-5">
-            <span className="text-red-600 dark:text-red-400 text-sm font-medium hover:underline flex items-center cursor-pointer">
-              Read full story
-              <ArrowRightIcon className="mt-1" size={14} />
-            </span>
+          <div className="mt-auto absolute bottom-4 left-5 flex items-center gap-1 text-red-600 dark:text-red-400 text-sm font-medium">
+            <span>Read full story</span>
+            <ArrowRightIcon size={14} />
           </div>
         </div>
       </Link>
-    </div>
+    </article>
   );
 };
 

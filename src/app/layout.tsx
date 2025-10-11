@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import HeadSection from "@/components/HeadSection";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ReactLenis } from 'lenis/react'
 import Footer from "@/components/Footer";
-import GoogleAnalytics from '@/components/GoogleAnalytics';
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import ScrollToTop from "@/components/ScrollToTop";
+import { defaultMetadata } from "@/utils/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,10 +18,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "CeylonBrief - Latest News from Sri Lanka",
-  description: "Latest updates from Sri Lanka",
-};
+export const metadata = defaultMetadata;
 
 export default function RootLayout({
   children,
@@ -29,25 +27,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-    <head>
-      <link rel="icon" href="/images/favicon.ico" />
-    </head>  
+      <head>
+        <link rel="icon" href="/images/favicon.ico" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        
-      ><ReactLenis root>
-         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-        <HeadSection />
-        <GoogleAnalytics />
-        {children}
-        <Footer />
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <HeadSection />
+          <Suspense fallback={null}>
+            <ScrollToTop />
+          </Suspense>
+          <GoogleAnalytics />
+          {children}
+          <Footer />
         </ThemeProvider>
-        </ReactLenis>
       </body>
     </html>
   );

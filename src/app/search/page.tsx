@@ -1,18 +1,48 @@
-import React, { FC } from "react";
 import { AlertCircle } from "lucide-react";
-import ClientPaginatedNews from "@/components/ClientPaginatedNews";
+import { buildMetadata } from "@/utils/seo";
+import PaginatedNews from "@/components/PaginatedNews";
 import { NewsItem } from "@/types/news";
 
-type Props = {
-  searchParams: {
-    query?: string;
-  };
+type SearchPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-const page: FC<Props> = async ({ searchParams }) => {
+
+export async function generateMetadata({ searchParams }: SearchPageProps) {
+  const params = await searchParams;
+  const rawQuery = params.query;
+  const query =
+    typeof rawQuery === "string"
+      ? rawQuery
+      : Array.isArray(rawQuery)
+      ? rawQuery[0]
+      : "";
+
+  if (!query) {
+    return buildMetadata({
+      title: "Search News",
+      description: "Search CeylonBrief for the latest headlines and in-depth coverage from Sri Lanka.",
+      path: "/search",
+      keywords: ["CeylonBrief search", "Sri Lanka news search"],
+    });
+  }
+
+  return buildMetadata({
+    title: `Search results for "${query}"`,
+    description: `Discover the latest articles, reports, and headlines related to ${query} on CeylonBrief.`,
+    path: `/search?query=${encodeURIComponent(query)}`,
+    keywords: ["CeylonBrief search", `${query} news`, `Sri Lanka ${query}`],
+  });
+}
+
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
   // Await searchParams before accessing properties
   const params = await searchParams;
   const queryValue = params.query;
+  const pageParam = params.page;
+  const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam;
+  const pageNumber = Number.parseInt(pageValue ?? "1", 10);
+  const currentPage = Number.isFinite(pageNumber) && pageNumber > 0 ? pageNumber : 1;
   const query =
     typeof queryValue === "string"
       ? queryValue
@@ -76,11 +106,16 @@ const page: FC<Props> = async ({ searchParams }) => {
               </div>
             </div>
           )}
-          <ClientPaginatedNews newsItems={data} />
+          <PaginatedNews
+            newsItems={data}
+            currentPage={currentPage}
+            basePath="/search"
+            searchParams={params}
+          />
         </>
       )}
     </div>
   );
 };
 
-export default page;
+export default SearchPage;
