@@ -11,7 +11,7 @@ ENV NEXT_DISABLE_LIGHTNINGCSS=1
 RUN npm run build
 
 # Stage 2: Production
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
