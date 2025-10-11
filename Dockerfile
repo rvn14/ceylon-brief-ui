@@ -7,6 +7,7 @@ COPY package.json package-lock.json* ./
 RUN npm install
 
 COPY . .
+ENV NEXT_DISABLE_LIGHTNINGCSS=1
 RUN npm run build
 
 # Stage 2: Production
