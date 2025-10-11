@@ -4,7 +4,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
-RUN npm install lightningcss-linux-x64-musl @tailwindcss/oxide-linux-x64-musl sass-embedded-linux-x64-musl
+# RUN npm install lightningcss-linux-x64-musl @tailwindcss/oxide-linux-x64-musl sass-embedded-linux-x64-musl
 RUN npm install
 
 COPY . .
