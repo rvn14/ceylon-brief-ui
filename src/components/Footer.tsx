@@ -16,8 +16,8 @@ function Footer() {
   ]
 
   return (
-    <footer className='bg-red-900 border-t border-red-700 text-gray-100 dark:text-white text-sm md:text-base w-screen py-6 px-4 flex justify-center'>
-      <div className='flex w-full max-w-6xl flex-col gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left'>
+    <footer className='bg-red-900 border-t border-red-700 text-gray-100 dark:text-white text-sm md:text-base w-full py-6 px-12 flex justify-center'>
+      <div className='flex w-full max-w-8xl flex-col gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left'>
         <span className='font-medium tracking-wide'>Copyright © | 2025 CeylonBrief</span>
         <div className='flex flex-col items-center gap-3 sm:flex-row sm:gap-4'>
           <span className='text-xs uppercase tracking-wider text-gray-200'>

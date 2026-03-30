@@ -186,7 +186,7 @@ const PaginatedNews = ({
         id="latest-news-grid"
         className="flex justify-center items-center p-4"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 w-full max-w-7xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 w-full max-w-8xl">
           {currentItems.map((item) => (
             <EverythingCard key={item.id} {...item} />
           ))}

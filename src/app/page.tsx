@@ -3,6 +3,7 @@ import Highlights from "@/components/Highlights";
 import { buildMetadata } from "@/utils/seo";
 import PaginatedNews from "@/components/PaginatedNews";
 import { LegacyNewsItem } from "@/types/news";
+import { dummy } from "@/utils/dummyData";
 
 type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -17,7 +18,7 @@ export const metadata = buildMetadata({
 const HomePage = async ({ searchParams }: PageProps) => {
   let data: LegacyNewsItem[] = [];
   let error: string | null = null;
-
+  const dummyData = dummy;
   const params = await searchParams;
   const pageParam = params?.page;
   const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam;
@@ -47,14 +48,14 @@ const HomePage = async ({ searchParams }: PageProps) => {
     console.error("Fetch error:", err, error);
   }
 
-  const newsData = data;
+  const newsData = dummyData;
 
   return (
     <div className="bg-background px-3 sm:px-6 lg:px-20 xl:px-28 py-6 sm:py-12">
-      <div className="w-full max-w-6xl mx-auto pt-4 sm:pt-6 pb-8 flex justify-center items-center">
+      <div className="w-full max-w-8xl mx-auto pt-4 sm:pt-6 pb-8 flex justify-center items-center">
         <Highlights news={newsData} />
       </div>
-      <div className="w-full max-w-6xl mx-auto font-semibold justify-center items-center mb-8 px-2 sm:px-4">
+      <div className="w-full max-w-8xl mx-auto font-semibold justify-center items-center mb-8 px-2 sm:px-4">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Latest News</h2>
           <div className="w-full h-1 bg-gradient-to-r from-red-600 to-red-500 rounded-full"></div>
@@ -67,7 +68,7 @@ const HomePage = async ({ searchParams }: PageProps) => {
         </div>
       ) : null}
 
-      <div className="w-full max-w-6xl mx-auto">
+      <div className="w-full max-w-8xl mx-auto">
         <PaginatedNews
           newsItems={newsData}
           currentPage={safeCurrentPage}
