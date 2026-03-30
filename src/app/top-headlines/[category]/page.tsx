@@ -1,5 +1,6 @@
 import PaginatedNews from "@/components/PaginatedNews";
 import { Article, NewsItem } from "@/types/news";
+import { dummy } from "@/utils/dummyData";
 import { buildMetadata } from "@/utils/seo";
 
 interface TopHeadlineItem {
@@ -46,14 +47,15 @@ export default async function TopHeadlines({ params, searchParams }: PageProps) 
   const { category } = await params;
   const formattedCategory =
     category.charAt(0).toUpperCase() + category.slice(1);
-
+  const dummtData = dummy
   const queryParams = await searchParams;
   const pageParam = queryParams.page;
   const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam;
   const pageNumber = Number.parseInt(pageValue ?? "1", 10);
   const currentPage = Number.isFinite(pageNumber) && pageNumber > 0 ? pageNumber : 1;
 
-  let data: NewsItem[] = [];
+  // let data: NewsItem[] = [];
+  let data = dummy
   let error = null;
 
   try {
